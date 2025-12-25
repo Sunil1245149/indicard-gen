@@ -63,40 +63,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
     }
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full bg-slate-900 text-white p-4">
-        <div className="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 max-w-sm w-full">
-          <div className="flex flex-col items-center mb-6">
-            <div className="w-16 h-16 bg-red-600/20 text-red-500 rounded-full flex items-center justify-center mb-4">
-              <Lock size={32} />
-            </div>
-            <h2 className="text-xl font-bold">Admin Access</h2>
-            <p className="text-slate-400 text-sm">Restricted Area</p>
-          </div>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter Password"
-              className="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none"
-            />
-            <button
-              type="submit"
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-colors"
-            >
-              Unlock Dashboard
-            </button>
-          </form>
-          <button onClick={onLogout} className="mt-4 text-sm text-slate-500 hover:text-white w-full">
-            Back to Public App
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="h-full flex flex-col bg-slate-50">
       {/* Admin Header */}
@@ -178,9 +144,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
                     </td>
                     <td className="p-3 flex justify-center gap-2">
                         {/* 
-                          Fix: Use standard anchor tag with relative path.
-                          This works on both localhost (http://localhost:port/?id=...)
-                          and GitHub Pages (https://user.github.io/repo/?id=...)
+                          Fix: Use standard anchor tag with explicit relative path logic.
+                          '?id=' appends to the current directory (e.g. /my-app/?id=123)
+                          which is correct for GitHub Pages.
                         */}
                         <a
                           href={`?id=${item.id}`}
