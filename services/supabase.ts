@@ -37,10 +37,18 @@ export const isConfigValid = () => {
 };
 
 // --- HELPER FUNCTIONS FOR LOCAL STORAGE ---
+const generateId = () => {
+    // Safe UUID generation that works in insecure contexts (http) and old browsers
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+    return 'local-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9);
+};
+
 const saveToLocal = (cardData: IdCardData): string => {
   try {
     const existing = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
-    const newId = crypto.randomUUID ? crypto.randomUUID() : 'local-' + Date.now();
+    const newId = generateId();
     const newRecord = {
       id: newId,
       data: { ...cardData, id: newId },
