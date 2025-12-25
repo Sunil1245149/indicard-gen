@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>KisanID Pro Web</title>
+    <!-- Tailwind CDN kept for simplicity -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        overflow: hidden; /* Prevent body scroll for app feel */
+        background-color: #0f172a; /* Slate 900 */
+      }
+      .hindi-font {
+        font-family: 'Tiro Devanagari Hindi', serif;
+      }
+      /* Custom Scrollbar for internal panels */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.05);
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* PRINT STYLES FOR PVC CARD (CR-80) */
+      @media print {
+        @page {
+          margin: 0;
+          size: auto;
+        }
+        
+        body, html, #root {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          background-color: white;
+          overflow: visible !important;
+        }
+
+        /* Hide everything by default */
+        body * {
+          visibility: hidden;
+        }
+
+        /* Only show the print container and its children */
+        #print-container, #print-container * {
+          visibility: visible;
+        }
+
+        #print-container {
+          position: fixed !important; /* Force fixed to break out of any flex/overflow containers */
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          padding-top: 10mm;
+          gap: 10mm;
+          background-color: white;
+          z-index: 99999;
+        }
+
+        /* The Card Wrapper - Forces Physical CR-80 Dimensions */
+        .print-card-wrapper {
+          width: 85.6mm !important; /* Standard ID Card Width */
+          height: 54mm !important;  /* Standard ID Card Height */
+          overflow: hidden;
+          border-radius: 3mm;       /* Standard Corner Radius */
+          
+          /* Force Background Graphics */
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          
+          /* Layout */
+          break-inside: avoid;
+          display: block;
+          position: relative;
+          border: 1px dashed #d1d5db !important; /* Light dashed border for cutting guide */
+          box-shadow: none !important;
+        }
+
+        /* Scale the React Component to fit the mm box 
+           Logic: React component is 342px wide.
+           85.6mm is approx 323.5px at 96 DPI.
+           Scale Factor: 323.5 / 342 = ~0.946
+        */
+        .print-card-wrapper > div {
+          transform: scale(0.946);
+          transform-origin: top left;
+        }
+        
+        /* Hide buttons/controls that might be inside print container */
+        .no-print {
+          display: none !important;
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1",
+    "jspdf": "https://esm.sh/jspdf@^2.5.1",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.39.3"
+  }
+}
+</script>
+</head>
+  <body class="text-gray-900">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

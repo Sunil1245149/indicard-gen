@@ -1,0 +1,5 @@
+{
+  "name": "IndiCard Gen",
+  "description": "A versatile Indian-style Identity Card generator with manual entry and AI-powered auto-fill capabilities using Gemini.",
+  "requestFramePermissions": []
+}
