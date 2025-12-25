@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AlertTriangle, ShieldCheck } from 'lucide-react';
 
 export const DisclaimerModal = () => {
@@ -18,7 +18,7 @@ export const DisclaimerModal = () => {
           
           <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
             <p className="font-semibold text-lg text-black">
-              This application is for PERSONAL USE & DEMONSTRATION ONLY.
+              This application is for PERSONAL USE ONLY.
             </p>
             
             <ul className="list-disc pl-5 space-y-2">

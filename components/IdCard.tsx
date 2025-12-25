@@ -16,26 +16,15 @@ const getQrUrl = (data: IdCardData) => {
     // URL format: https://[app-domain]/?id=[uuid]
     return `https://quickchart.io/qr?text=${encodeURIComponent(`${baseUrl}/?id=${data.id}`)}&size=400&ecLevel=M&margin=1&format=svg`;
   }
-
-  // Fallback: Static Data for Offline/Unsaved Cards
-  let qrData = '';
-  if (data.cardType === 'bc_agent') {
-      qrData = `BANK OF MAHARASHTRA BC AGENT
---------------------------------
-Agent ID: ${data.idNumber}
-Name: ${data.name}
-Branch: ${data.branchName}
-(Local Preview)`;
-  } else {
-      qrData = `KISAN ID: ${data.name}
-Dist: ${data.district}
-Vill: ${data.village}
-Gat: ${data.gatNumber}
-(Local Preview)`;
-  }
-
-  return `https://quickchart.io/qr?text=${encodeURIComponent(qrData)}&size=400&ecLevel=M&margin=1&format=svg`;
+  // Return empty if not saved yet
+  return '';
 };
+
+const QrPlaceholder = () => (
+    <div className="w-full h-full bg-gray-100 border border-dashed border-gray-400 flex flex-col items-center justify-center p-1">
+        <span className="text-[8px] text-center font-bold text-gray-500 leading-tight">SAVE TO<br/>GENERATE</span>
+    </div>
+);
 
 // Professional SVG Logo Construction for AgreeStack
 const AgreeStackLogo = () => (
@@ -181,6 +170,7 @@ const Watermark: React.FC<{ logoUrl?: string | null }> = ({ logoUrl }) => {
 
 export const IdCardFront: React.FC<IdCardProps> = ({ data }) => {
   const qrUrl = getQrUrl(data);
+  const showQr = !!data.id;
 
   return (
     <div className="w-[342px] h-[216px] bg-white rounded-xl shadow-lg relative overflow-hidden flex flex-col print:shadow-none font-sans select-none box-border">
@@ -259,8 +249,12 @@ export const IdCardFront: React.FC<IdCardProps> = ({ data }) => {
           </div>
 
           {/* Large QR Front - Positioned bottom right inside borders */}
-          <div className="absolute bottom-1 right-2">
-              <img src={qrUrl} alt="QR" className="w-20 h-20 border border-gray-300 p-[2px] bg-white shadow-sm" />
+          <div className="absolute bottom-1 right-2 w-20 h-20 bg-white border border-gray-300 shadow-sm p-[2px]">
+             {showQr ? (
+                <img src={qrUrl} alt="QR" className="w-full h-full" />
+             ) : (
+                <QrPlaceholder />
+             )}
           </div>
         </div>
         
@@ -280,6 +274,7 @@ export const IdCardFront: React.FC<IdCardProps> = ({ data }) => {
 
 export const IdCardBack: React.FC<IdCardProps> = ({ data }) => {
   const qrUrl = getQrUrl(data);
+  const showQr = !!data.id;
 
   return (
     <div className="w-[342px] h-[216px] bg-white rounded-xl shadow-lg relative overflow-hidden flex flex-col print:shadow-none font-sans select-none box-border">
@@ -338,7 +333,13 @@ export const IdCardBack: React.FC<IdCardProps> = ({ data }) => {
              
              {/* Large Scanner - Maximized Size */}
              <div className="flex flex-col items-center gap-0.5 -mb-2 -mr-1 z-20">
-                <img src={qrUrl} alt="QR Code" className="w-[90px] h-[90px] border border-gray-400 p-[2px] bg-white shadow-sm mb-1" />
+                <div className="w-[90px] h-[90px] border border-gray-400 p-[2px] bg-white shadow-sm mb-1">
+                    {showQr ? (
+                        <img src={qrUrl} alt="QR Code" className="w-full h-full" />
+                    ) : (
+                        <QrPlaceholder />
+                    )}
+                </div>
              </div>
           </div>
        </div>
@@ -351,6 +352,7 @@ export const IdCardBack: React.FC<IdCardProps> = ({ data }) => {
 
 export const BCAgentCard: React.FC<IdCardProps> = ({ data }) => {
   const qrUrl = getQrUrl(data);
+  const showQr = !!data.id;
   
   return (
     <div className="w-[342px] h-[216px] bg-white rounded-xl shadow-lg relative overflow-hidden flex flex-col print:shadow-none font-sans select-none box-border text-[#1e3a8a]">
@@ -425,6 +427,7 @@ export const BCAgentCard: React.FC<IdCardProps> = ({ data }) => {
 
 export const BCAgentCardBack: React.FC<IdCardProps> = ({ data }) => {
   const qrUrl = getQrUrl(data);
+  const showQr = !!data.id;
   
   return (
     <div className="w-[342px] h-[216px] bg-white rounded-xl shadow-lg relative overflow-hidden flex flex-col print:shadow-none font-sans select-none box-border text-[#1e3a8a]">
@@ -465,7 +468,13 @@ export const BCAgentCardBack: React.FC<IdCardProps> = ({ data }) => {
 
           {/* QR Code Section */}
           <div className="flex flex-col items-center justify-center w-[80px]">
-             <img src={qrUrl} alt="QR" className="w-[80px] h-[80px] border-2 border-gray-200 p-1 bg-white mb-1" />
+             <div className="w-[80px] h-[80px] border-2 border-gray-200 p-1 bg-white mb-1">
+                 {showQr ? (
+                     <img src={qrUrl} alt="QR" className="w-full h-full" />
+                 ) : (
+                     <QrPlaceholder />
+                 )}
+             </div>
              <span className="text-[7px] text-center font-bold text-gray-400 uppercase">Scan for<br/>Agent Verification</span>
           </div>
 

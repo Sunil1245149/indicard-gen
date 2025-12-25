@@ -48,6 +48,38 @@ export const PublicProfile: React.FC<PublicProfileProps> = ({ data }) => {
                <span className="font-medium">{data.name}</span>
             </div>
             <div className="flex justify-between">
+               <span className="text-gray-500">Former ID:</span>
+               <span className="font-medium font-mono text-green-700">{data.idNumber}</span>
+            </div>
+            <div className="flex justify-between">
+               <span className="text-gray-500">Mobile:</span>
+               <span className="font-medium">{data.phone}</span>
+            </div>
+            
+            {/* Extended Details for Kisan Cards */}
+            {data.cardType === 'kisan' && (
+                <>
+                    <div className="border-t border-dashed my-2 pt-1"></div>
+                    <div className="flex justify-between">
+                        <span className="text-gray-500">Village:</span>
+                        <span className="font-medium">{data.village}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className="text-gray-500">District:</span>
+                        <span className="font-medium">{data.district}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className="text-gray-500">Gat No:</span>
+                        <span className="font-medium">{data.gatNumber}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className="text-gray-500">Area:</span>
+                        <span className="font-medium">{data.area} Ha</span>
+                    </div>
+                </>
+            )}
+            
+            <div className="flex justify-between mt-2 pt-2 border-t">
                <span className="text-gray-500">Issue Date:</span>
                <span className="font-medium">{data.issueDate}</span>
             </div>
