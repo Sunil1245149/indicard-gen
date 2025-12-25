@@ -2,8 +2,25 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { IdCardData } from "../types";
 
-// Always use process.env.API_KEY directly as per guidelines
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Helper to safely get API KEY without crashing in browser
+const getApiKey = () => {
+  // Check Vite environment first
+  // @ts-ignore
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_KEY) {
+    // @ts-ignore
+    return import.meta.env.VITE_API_KEY;
+  }
+  // Check Node environment (fallback)
+  // @ts-ignore
+  if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+    // @ts-ignore
+    return process.env.API_KEY;
+  }
+  return '';
+};
+
+// Initialize with safe key
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 export const generateIdentityData = async (prompt: string): Promise<Partial<IdCardData>> => {
   try {

@@ -177,8 +177,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
                         {new Date(item.created_at || Date.now()).toLocaleDateString()}
                     </td>
                     <td className="p-3 flex justify-center gap-2">
+                        {/* 
+                          UPDATED HREF:
+                          Old: href={`/?id=${item.id}`}  (Goes to domain root, breaks in subfolders)
+                          New: href={`?id=${item.id}`}   (Appends to current path, safer for subfolders)
+                          Alternatively, constructing full URL for robustness.
+                        */}
                         <a 
-                          href={`/?id=${item.id}`} 
+                          href={`?id=${item.id}`} 
                           target="_blank" 
                           rel="noreferrer"
                           className="p-2 text-blue-500 hover:bg-blue-50 rounded"
