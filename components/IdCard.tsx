@@ -12,9 +12,11 @@ interface IdCardProps {
 const getQrUrl = (data: IdCardData) => {
   if (data.id) {
     // Dynamic URL for Online Verification
-    const baseUrl = window.location.origin;
-    // URL format: https://[app-domain]/?id=[uuid]
-    return `https://quickchart.io/qr?text=${encodeURIComponent(`${baseUrl}/?id=${data.id}`)}&size=400&ecLevel=M&margin=1&format=svg`;
+    // CRITICAL: Use window.location.href to include subdirectory path (e.g. /indicard-gen/) on GitHub Pages
+    const baseUrl = window.location.href.split('?')[0].replace(/\/$/, ""); 
+    const fullUrl = `${baseUrl}?id=${data.id}`;
+    
+    return `https://quickchart.io/qr?text=${encodeURIComponent(fullUrl)}&size=400&ecLevel=M&margin=1&format=svg`;
   }
   // Return empty if not saved yet
   return '';

@@ -63,21 +63,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
     }
   };
 
-  // Safe view handler that constructs the URL based on current location
-  const handleViewCard = (id: string) => {
-    try {
-        const url = new URL(window.location.href);
-        // Remove existing query params to be clean
-        url.search = ''; 
-        // Add ID param
-        url.searchParams.set('id', id);
-        window.open(url.toString(), '_blank');
-    } catch (e) {
-        // Fallback for very old browsers
-        window.open(`?id=${id}`, '_blank');
-    }
-  };
-
   if (!isAuthenticated) {
     return (
       <div className="flex flex-col items-center justify-center h-full bg-slate-900 text-white p-4">
@@ -192,13 +177,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
                         {new Date(item.created_at || Date.now()).toLocaleDateString()}
                     </td>
                     <td className="p-3 flex justify-center gap-2">
-                        <button 
-                          onClick={() => handleViewCard(item.id)}
-                          className="p-2 text-blue-500 hover:bg-blue-50 rounded"
+                        {/* 
+                          Fix: Use standard anchor tag with relative path.
+                          This works on both localhost (http://localhost:port/?id=...)
+                          and GitHub Pages (https://user.github.io/repo/?id=...)
+                        */}
+                        <a
+                          href={`?id=${item.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 text-blue-500 hover:bg-blue-50 rounded inline-block"
                           title="View Card"
                         >
                             <Eye size={16} />
-                        </button>
+                        </a>
                         <button 
                           onClick={() => handleDelete(item.id)}
                           className="p-2 text-red-500 hover:bg-red-50 rounded"
